@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">QR Code Generator</h1>
+            
+            <div class="space-y-4">
+                <div class="relative">
+                    <input type="text" 
+                           id="qrInput" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="Enter URL or text">
+                    <p id="errorMessage" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+
+                <button id="generateBtn" 
+                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+                    Generate QR Code
+                </button>
+
+                <div id="qrResult" class="hidden">
+                    <div class="mt-6 p-4 border border-gray-200 rounded-lg">
+                        <div id="qrcode" class="flex justify-center"></div>
+                    </div>
+                    
+                    <div class="mt-4 space-x-4 flex justify-center">
+                        <button id="downloadBtn" 
+                                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200">
+                            Download
+                        </button>
+                        <button id="copyBtn" 
+                                class="bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-200">
+                            Copy Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
