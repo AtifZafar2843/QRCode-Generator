@@ -6,39 +6,102 @@
     <title>QR Code Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f6f8fd 0%, #e9f0f7 100%);
+        }
+        .qr-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .qr-decoration {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .qr-decoration-1 {
+            top: -75px;
+            left: -75px;
+            background: url('https://cdn-icons-png.flaticon.com/512/1356/1356479.png') no-repeat center;
+            background-size: contain;
+        }
+        .qr-decoration-2 {
+            bottom: -75px;
+            right: -75px;
+            background: url('https://cdn-icons-png.flaticon.com/512/1356/1356479.png') no-repeat center;
+            background-size: contain;
+            transform: rotate(180deg);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
-            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">QR Code Generator</h1>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div class="max-w-md mx-auto qr-container rounded-2xl shadow-xl p-6 sm:p-8 relative overflow-hidden">
+            <!-- Decorative QR Code Icons -->
+            <div class="qr-decoration qr-decoration-1"></div>
+            <div class="qr-decoration qr-decoration-2"></div>
+
+            <!-- Header Section -->
+            <div class="text-center mb-8 relative z-10">
+                <h1 class="text-3xl sm:text-4xl font-bold gradient-text mb-2">QR Code Generator</h1>
+                <p class="text-gray-600 text-sm sm:text-base">Create beautiful QR codes in seconds</p>
+            </div>
             
-            <div class="space-y-4">
+            <div class="space-y-6 relative z-10">
+                <!-- Input Section -->
                 <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                        </svg>
+                    </div>
                     <input type="text" 
                            id="qrInput" 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm sm:text-base bg-white/50 backdrop-blur-sm"
                            placeholder="Enter URL or text">
-                    <p id="errorMessage" class="text-red-500 text-sm mt-1 hidden"></p>
+                    <p id="errorMessage" class="text-red-500 text-xs sm:text-sm mt-2 hidden"></p>
                 </div>
 
+                <!-- Generate Button -->
                 <button id="generateBtn" 
-                        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition duration-300 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                     Generate QR Code
                 </button>
 
+                <!-- QR Result Section -->
                 <div id="qrResult" class="hidden">
-                    <div class="mt-6 p-4 border border-gray-200 rounded-lg">
-                        <div id="qrcode" class="flex justify-center"></div>
+                    <div class="mt-6 p-6 border border-gray-100 rounded-xl bg-white/50 backdrop-blur-sm shadow-inner">
+                        <div id="qrcode" class="flex justify-center max-w-[200px] sm:max-w-[250px] mx-auto"></div>
                     </div>
                     
-                    <div class="mt-4 space-x-4 flex justify-center">
+                    <div class="mt-6 space-y-3 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row justify-center">
                         <button id="downloadBtn" 
-                                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200">
-                            Download
+                                class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-green-500 text-white py-3 px-6 rounded-xl hover:from-emerald-600 hover:to-green-600 transition duration-300 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            <span class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Download
+                            </span>
                         </button>
                         <button id="copyBtn" 
-                                class="bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-200">
-                            Copy Link
+                                class="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-xl hover:from-purple-600 hover:to-pink-600 transition duration-300 text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            <span class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                                </svg>
+                                Copy Link
+                            </span>
                         </button>
                     </div>
                 </div>
